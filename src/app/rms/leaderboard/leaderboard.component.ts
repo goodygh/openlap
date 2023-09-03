@@ -7,30 +7,30 @@ import { Subscription } from 'rxjs';
 const FIELDS = [{
   // no fuel/pit lane
   practice: [
-    'bestlap gap int lastlap laps status',
-    'bestlap sector1 sector2 sector3 lastlap status'
+    'bestlap gap int avglap laps status',
+    'bestlap sector1 sector2 sector3 avglap status'
   ],
   qualifying: [
-    'bestlap gap int lastlap laps status',
-    'bestlap sector1 sector2 sector3 lastlap status'
+    'bestlap gap int avglap laps status',
+    'bestlap sector1 sector2 sector3 avglap status'
   ],
   race: [
-    'time bestlap lastlap laps status',
-    'time sector1 sector2 sector3 lastlap status',
+    'time bestlap avglap laps status',
+    'time sector1 sector2 sector3 avglap status',
   ]
 }, {
   // with fuel/pit lane
   practice: [
-    'bestlap gap int lastlap laps fuel status',
-    'bestlap sector1 sector2 sector3 lastlap fuel status'
+    'bestlap gap int avglap laps fuel status',
+    'bestlap sector1 sector2 sector3 avglap fuel status'
   ],
   qualifying: [
-    'bestlap gap int lastlap laps fuel status',
-    'bestlap sector1 sector2 sector3 lastlap fuel status'
+    'bestlap gap int avglap laps fuel status',
+    'bestlap sector1 sector2 sector3 avglap fuel status'
   ],
   race: [
-    'time bestlap lastlap laps pits fuel status',
-    'time sector1 sector2 sector3 lastlap fuel status'
+    'time bestlap avglap laps pits fuel status',
+    'time sector1 sector2 sector3 avglap fuel status'
   ]
 }];
 
@@ -47,6 +47,7 @@ export class LeaderboardItem {
   laps: number;
   last: number[];
   best: number[];
+  avg: number;
   times: number[][];
   fuel?: number;
   pit?: boolean;

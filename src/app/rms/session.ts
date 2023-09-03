@@ -19,6 +19,7 @@ export interface Entry {
   id: number
   time: number;
   laps: number;
+  avg: number;
   last: number[];
   best: number[];
   times: number[][];
@@ -257,9 +258,12 @@ export class Session {
           const laps = times.length ? times.length - 1 : 0;
           const curr = times[times.length - 1] || [];
           const prev = times[times.length - 2] || [];
+          const avg = (curr[0] > 0 && laps > 0) ? curr[0] / laps : undefined;
+
           return {
             id: group.key,
             time: curr[0],
+            avg: avg,
             laps: laps,
             last: last,
             best: best,
