@@ -7,30 +7,30 @@ import { Subscription } from 'rxjs';
 const FIELDS = [{
   // no fuel/pit lane
   practice: [
-    'bestlap gap int lastlap laps status',
-    'bestlap sector1 sector2 sector3 lastlap status'
+    'bestlap gap int avglap laps status',
+    'bestlap sector1 sector2 sector3 avglap status'
   ],
   qualifying: [
-    'bestlap gap int lastlap laps status',
-    'bestlap sector1 sector2 sector3 lastlap status'
+    'bestlap gap int avglap laps status',
+    'bestlap sector1 sector2 sector3 avglap status'
   ],
   race: [
-    'time bestlap lastlap laps status',
-    'time sector1 sector2 sector3 lastlap status',
+    'time bestlap avglap laps status',
+    'time sector1 sector2 sector3 avglap status',
   ]
 }, {
   // with fuel/pit lane
   practice: [
-    'bestlap gap int lastlap laps fuel status',
-    'bestlap sector1 sector2 sector3 lastlap fuel status'
+    'bestlap gap int avglap laps fuel status',
+    'bestlap sector1 sector2 sector3 avglap fuel status'
   ],
   qualifying: [
-    'bestlap gap int lastlap laps fuel status',
-    'bestlap sector1 sector2 sector3 lastlap fuel status'
+    'bestlap gap int avglap laps fuel status',
+    'bestlap sector1 sector2 sector3 avglap fuel status'
   ],
   race: [
-    'time bestlap lastlap laps pits fuel status',
-    'time sector1 sector2 sector3 lastlap fuel status'
+    'time bestlap avglap laps pits fuel status',
+    'time sector1 sector2 sector3 avglap fuel status'
   ]
 }];
 
@@ -47,6 +47,7 @@ export class LeaderboardItem {
   laps: number;
   last: number[];
   best: number[];
+  avg?: number;
   times: number[][];
   fuel?: number;
   pit?: boolean;
@@ -71,7 +72,7 @@ class LeaderboardDetail extends LeaderboardItem {
 export class LeaderboardComponent implements OnDestroy {
 
   readonly placeholder = 'Driver {{number}}';
-  
+
   @ViewChild(IonModal) modal: IonModal;
 
   @Input() mode: 'practice' | 'qualifying' | 'race';
@@ -81,7 +82,24 @@ export class LeaderboardComponent implements OnDestroy {
   @Input() pitlane: boolean;
 
   @Input() set items(items: LeaderboardItem[]) {
-    this._items = items;
+    this._items = items.map(item => {
+      const lapTimes = item.times.map(time => time[0]);
+      var trueLapTimes = [];
+      lapTimes.forEach((time, index) => {
+        if (index > 0) {
+          trueLapTimes.push( time - lapTimes[index - 1] );
+        }
+      });
+
+      const trueFullTime = trueLapTimes.reduce((total, time) => total + time, 0);
+      const avg = trueFullTime / item.laps;
+
+      return {
+        ...item,
+        time: trueFullTime,
+        avg: avg,
+      }
+    });
     if (items) {
       this.ranked = [...items];
       this.ranked.sort((lhs, rhs) => lhs.position - rhs.position);

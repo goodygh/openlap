@@ -25,7 +25,7 @@
         <ion-content class="ion-padding">
             <leaderboard-head class="row" [fields]="detailFields"></leaderboard-head>
             <leaderboard-lap class="row" *ngFor="let times of detail?.laptimes; odd as isOddRow; index as i; count as n"
-                             [ngClass]="isOddRow ? 'odd' : 'even'" 
+                             [ngClass]="isOddRow ? 'odd' : 'even'"
                              [lap]="n - i" [item]="detail" [times]="times" [best]="best" [intlap]="intlaps[detail?.id]" [fields]="detailFields">
             </leaderboard-lap>
         </ion-content>

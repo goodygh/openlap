@@ -38,9 +38,9 @@
     <ng-template ngSwitchCase="int">
         {{(item.position && item.best[0] ? item.best[0] - ranked[item.position - 1].best[0] : null) | time:'+s.sss'}}
     </ng-template>
-    <ng-template ngSwitchCase="lastlap">
-        <span [ngClass]="{best: item.last[0] == item.best[0], allbest: item.last[0] == best[0], notime: !item.last[0]}">
-            {{(item.last[0] | time:'s.sss') || 'NO&thinsp;TIME'}}
+    <ng-template ngSwitchCase="avglap">
+        <span [ngClass]="{notime: !item.avg}">
+            {{(item.avg | time:'s.sss') || 'NO&thinsp;TIME'}}
         </span>
     </ng-template>
     <ng-template ngSwitchCase="sector1">
